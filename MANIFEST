@@ -1,0 +1,12 @@
+Any2xml.pm
+Changes
+MANIFEST
+Makefile.PL
+docs/template-intro
+docs/time-sheet-example.xml
+docs/xtmpl-doc
+docs/you-need-our-help
+test.pl
+INSTALL
+README
+COPYING

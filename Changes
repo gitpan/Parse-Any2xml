@@ -1,0 +1,9 @@
+Revision history for Perl extension Parse::Any2xml.
+
+2.01  Fri Oct 24 22:00:00 2002
+  - attempted fix to multiple root tag problems
+  - verbosity
+2.00  Fri Jun 28 16:24:01 2002
+	- original version; created by h2xs 1.20 with options
+		-X -n Parse::Any2xml
+

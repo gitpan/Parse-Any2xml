@@ -1,0 +1,82 @@
+<?xml version="1.0"?> 
+<!-- Copyright (c) 2001-2002 Reliance Technology. All rights reserved 
+     Reliance Technology http://www.goreliance.com info@goreliance.com 
+--> 
+<!-- 
+  Note that the "period ending", "employee" and "department" strings can occur
+  on the same or different lines. There has to be a colon (:) following these.
+  However any amount of whitespace is allowed before the colon. 
+          
+  The time_sheets::foo() are Perl subroutine calls. As you can see, processing
+  exits are available when setting the source for parsing via '_set' to set
+  the contents and _set_foo to set attributes. 
+--> 
+
+<hours_table 
+          _match= 
+          "(?isx) (?#case-insensitive,include newline in wildcard, allow pretty 
+          regex) 
+          period\sending.*?: 
+          \s* 
+          ([\d\-\/]+)    (?#Date - digits, hyphen and slash allowed. 
+          This gives our $1) 
+          .*? 
+          employee.*?:   (?# Allow any characters, even newlines before 
+          the :) 
+          \s* 
+          (\w+)          (?# the 
+          first word after the : is the employee id. This is our $2) 
+          .*?            (?# 
+          then any number of characters immediately before department) 
+          department.*?: (?# Allow any characters, even newlines before the :) 
+          
+          \s*?           (?# any 
+          white spaces immediately preceding ) 
+          (\w+)          (?# the next 
+          word, which is the department. This is our $3) 
+          \s*?           (?# 
+          followed by any whitespace) 
+          (.*)           (?# Ha. 
+          This is the body of the time sheet. This is our $4) 
+          " 
+          _set_employee="$2" _set_department="$3"
+          _set_total_hours="$time_sheets::total" 
+          _set_period_ending="time_sheets::date($1)"> 
+
+  <this_tag_will_not_be_generated _set="&time_sheets::init()" />
+  <item _set="$4" 
+          _match="(?x) (?# allow white spaces in regex. Note the absence of 's' 
+          switch here) 
+          ([\d\/\-]+)  (?# date is $1) 
+          \s+          (?# allow 
+          white spaces) 
+          ([\d\:]+)    (?# time from is $2) 
+          [\s\-]+      (?# allow white spaces and a hyphen) 
+          
+          ([\d\:]+)    (?# time to is $3) 
+          \s+          (?# allow 
+          white spaces) 
+          ([\d\.]+)    (?# hours as entered by the employee is 
+          $4) 
+          "> 
+<!-- 
+  In the following, we simply take the matched values, do something and 
+  generate content by using the _fill directive. 
+--> 
+    <date comment=" 
+          Since the date can be in mmddyy or ddmmyy or yyyymmdd or ddmmyyyy 
+          we have written a function (see time_sheets.pl) to homogenize the 
+          dates" 
+          _set="time_sheets::date($1)" _fill="1"/> 
+    <start_time _set="$2" _fill="1"/> 
+    <stop_time _set="$3" _fill="1"/> 
+    <hours_worked _set="$4" _fill="1"/> 
+<!-- 
+  Verify.
+--> 
+    <calc_hours _set="time_sheets::calc_hours ($2,$3)" _fill="1" /> 
+    <hours_total
+               _set="time_sheets::hours_total($4) #This is a progressive total"
+               _fill="1"/> 
+  </item> 
+</hours_table> 

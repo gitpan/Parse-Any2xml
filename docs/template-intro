@@ -1,0 +1,38 @@
+   Any2XML Developer Edition - Any2XML Template Construction Instructions
+
+Any2XML template construction requires, as a minimum, a knowledge of regular
+expressions. Anyone with this knowledge can learn to construct template within
+a few hours. Anyone with some experience in Perl can easily extend the
+templates to create powerful translation and extraction engines. By combining 
+other programs or embedding Any2XML, data from different sources can be 
+dynamically acquired, processed and dispatched.  Visit the support pages
+<http://goreliance.com> to get up-to-date information, ideas and documentation.
+If you like what it can do but would rather get the work done, please contact
+us. 
+  
+        
+The regular expressions strictly follow Perl's regular expressions engine. The 
+following assumes a knowledge of regular expressions. 
+
+Template Structure
+
+An2XML template structure mirrors the desired XML structure. At each level, you 
+specify the tag, attributes and instructions on when and how to create them. 
+        
+You need to supply the XML header tag with any info and DTD if required. You
+can specify HTML style comments anywhere. Any processing instructions will be
+passed through by Any2XML.
+  
+Comments
+
+  XML comments are enclosed within <!-- da da da -->
+  Regular expression comments using the 'x' switch like (?# this is a comment)
+  Perl comments, which you can use within _set and _set_xxxx directives
+
+Anywhere in the template you can specify an attribute with a prefix '_' (but 
+not colliding with _set, _match, _exp and _fill) and set a value. Any2XML
+ignores these attributes. See the date element below for an example.
+
+I urge you to use comments and the 'x' switch to break up the regular 
+expression wherever you can so you can understand your own templates later, 
+let alone others! 

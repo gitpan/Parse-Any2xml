@@ -1,0 +1,20 @@
+Parse::Any2xml parses any structured or unstructured  ASCII document through
+ a template into an XML document. The templates are XML and easily represent
+ what the output will be. They are fully documented, as is the module.
+
+See docs/xtmpl-doc for how to write these templates (also called
+XTMPLs). docs/time-sheets-template.xml shows an example XTMPL. If you are
+confused, read docs/you-need-our-help and email us.
+
+See INSTALL for installation instructions.
+
+See <http://any2xml.com> and <http://goreliance.com> for more info on
+Reliance Technology that produces this wonderful Free Software.
+
+For complaints, see <http://goreliance.com/mailman/listinfo/parse-any2xml-list>.
+
+== DEPENDENCIES ==
+Perl 5.6
+XML::Ximple
+
+

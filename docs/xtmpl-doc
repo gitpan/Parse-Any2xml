@@ -1,0 +1,77 @@
+Any2XML  Developer Edition - More on Template Coding
+================================================================================
+
+You should code at least one element within the root element.  Whether to use
+elements or attributes is your choice. To code attributes use the _set_foo
+directive discussed below.  Any attribute you code without the _set prefix is
+passed through by Parse::Any2xml.
+
+All Any2XML directives are prefixed with a _ . Your attributes can start with
+an underscore, provided they do not clash with the defined directives.
+
+################################################################################
+Parse::Any2xml attributes
+
+################################################################################
+_match - Pattern match and extract
+      
+_match is an optional tag. By default "(.*)" is its value. It specifies a
+regular expression including memory and any inline switches. 
+
+Thus 
+    <newelement _set="$6" _set_abcd="$1*25"_fill="1"/> 
+is same as 
+    <newelement _set="$6" _match="(.*)" _set_abcd="$1*25"_fill="1"/> 
+  
+Unlike Perl's maximum of 9 memory variables ($1 .. $9), here you have unlimited 
+memory variables, i.e. you can have $15, $20 etc. according to your match 
+expression. 
+         
+Example: _match="(?is)name:\s*(.*?)\n\s*address:\s*(.*?)\n" 
+        
+################################################################################
+_set - Source for Match
+
+Sets the source that needs to be parsed (or further evaluated) according to
+the _match directive. This value is usually a matched memory value from a
+previous higher level match.
+
+Note that its value is a valid Perl expression to be evaluated using eval().
+
+Example: _set="$1.'-'.$2" 
+        
+      
+################################################################################
+_set_foo - set Attribute foo
+
+Allows creation of attribute with the name 'foo'.
+
+Example: _set_amount="$3+$4-$5"
+
+################################################################################
+_exp - Perl expression 
+
+This sets the contents of an element if and only if _fill is used; it is
+ignored if _fill is not used. The contents of the element will be the result of
+this Perl expression.
+
+################################################################################
+_fill - Fill Element 
+
+Fill the current element using _exp if it exists, otherwise _set . Without this
+Parse::Any2xml will create an empty element. Using _fill destroys data such
+that an element's child will not be able to match on it.
+
+Example 1: <address _set="$4" _fill="1">
+Example 2: <company _set="$2" _set_name="$1" _exp="'Got'.$1.'Hooray'" _fill="1">
+
+################################################################################
+Double-quoted Expressions
+        
+All values specified in double quotes for _match, _set, _exp and _set_file are 
+eval()ed as Perl code. So any legal Perl code is allowed in here. So if you
+code any literals, you need to code them within single quotes and concatenate
+with any expressions used. Perl's rules in escaping special characters apply
+here. If the return value is a null or numeric or character zero, the value
+returned is null (i.e. "").  If you want to see a space or zero instead,
+concatenate a space or zero in front of the result.
